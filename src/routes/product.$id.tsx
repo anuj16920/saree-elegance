@@ -44,7 +44,7 @@ function ProductPage() {
         {/* GALLERY */}
         <div className="grid grid-cols-[80px_1fr] gap-3">
           <div className="space-y-3">
-            {product.gallery.map((g, i) => (
+            {product.gallery.map((g: string, i: number) => (
               <button key={i} onClick={() => setImg(i)} className={`block w-20 h-24 rounded-lg overflow-hidden border-2 transition-all ${img === i ? "border-maroon" : "border-transparent opacity-60"}`}>
                 <img src={g} alt="" className="w-full h-full object-cover" />
               </button>
