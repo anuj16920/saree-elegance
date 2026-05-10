@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "@/lib/react-imports";
+import { useMemo, useState } from "react";
 import { SiteLayout } from "@/components/site/Layout";
 import { ProductCard } from "@/components/site/ProductCard";
 import { products } from "@/data/products";
