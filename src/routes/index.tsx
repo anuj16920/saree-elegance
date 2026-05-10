@@ -107,7 +107,7 @@ function Index() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
           {categories.map((c, i) => (
             <motion.div key={c.slug} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.05 }}>
-              <Link to="/shop" search={{ category: c.slug }} className="block group">
+              <Link to="/shop" className="block group">
                 <div className="aspect-square rounded-full overflow-hidden border-2 border-gold p-1">
                   <img src={c.image} alt={c.name} loading="lazy" className="w-full h-full object-cover rounded-full group-hover:scale-110 transition-transform duration-500" />
                 </div>
