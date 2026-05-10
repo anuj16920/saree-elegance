@@ -227,4 +227,4 @@ function BannerCard({ image, kicker, title, subtitle, to }: { image?: string; ki
     </Link>
   );
 }
-}
+
