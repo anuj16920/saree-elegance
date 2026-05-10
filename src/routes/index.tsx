@@ -71,16 +71,15 @@ function Index() {
       {/* USP STRIP */}
       <section className="border-y border-border bg-secondary/40">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6 grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[
-            [Award, "Authentic", "Handloom certified"],
-            [Truck, "Free Shipping", "Above ₹2999"],
-            [ShieldCheck, "Secure Payments", "UPI · COD · Cards"],
-            [RefreshCcw, "Easy Returns", "7-day hassle free"],
-          ].map(([Icon, t, d], i) => (
+          {([
+            { Icon: Award, t: "Authentic", d: "Handloom certified" },
+            { Icon: Truck, t: "Free Shipping", d: "Above ₹2999" },
+            { Icon: ShieldCheck, t: "Secure Payments", d: "UPI · COD · Cards" },
+            { Icon: RefreshCcw, t: "Easy Returns", d: "7-day hassle free" },
+          ]).map(({ Icon, t, d }, i) => (
             <div key={i} className="flex items-center gap-3">
-              {/* @ts-expect-error icon component */}
               <Icon className="w-6 h-6 text-maroon" />
-              <div><p className="text-sm font-semibold">{t as string}</p><p className="text-xs text-muted-foreground">{d as string}</p></div>
+              <div><p className="text-sm font-semibold">{t}</p><p className="text-xs text-muted-foreground">{d}</p></div>
             </div>
           ))}
         </div>
