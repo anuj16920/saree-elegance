@@ -158,14 +158,39 @@ function Index() {
         </div>
       </Section>
 
+      {/* LOOKBOOK */}
+      <Section>
+        <Heading kicker="Editorial" title="The Minni Lookbook" />
+        <div className="grid md:grid-cols-2 gap-4">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative aspect-[4/3] rounded-2xl overflow-hidden group">
+            <img src={lookbook1} alt="Bridal lookbook in maroon velvet Banarasi saree" loading="lazy" width={1280} height={864} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-t from-maroon-deep/80 to-transparent" />
+            <div className="absolute bottom-6 left-6 text-cream">
+              <p className="text-xs uppercase tracking-[0.25em] text-gold">Bridal Edit</p>
+              <h3 className="font-serif text-2xl md:text-3xl mt-1">Regal Weddings</h3>
+            </div>
+          </motion.div>
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }} className="relative aspect-[4/3] rounded-2xl overflow-hidden group">
+            <img src={lookbook2} alt="Festive lookbook with women in silk sarees celebrating Diwali" loading="lazy" width={1280} height={864} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div className="absolute inset-0 bg-gradient-to-t from-maroon-deep/80 to-transparent" />
+            <div className="absolute bottom-6 left-6 text-cream">
+              <p className="text-xs uppercase tracking-[0.25em] text-gold">Festive Edit</p>
+              <h3 className="font-serif text-2xl md:text-3xl mt-1">Celebrations of Light</h3>
+            </div>
+          </motion.div>
+        </div>
+      </Section>
+
       {/* INSTAGRAM */}
       <Section>
         <Heading kicker="@minnisarees" title="From Our Instagram" />
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-2">
-          {products.concat(products).slice(0, 6).map((p, i) => (
-            <a key={i} href="#" className="group relative aspect-square overflow-hidden rounded-lg">
-              <img src={p.image} alt="" loading="lazy" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-maroon/0 group-hover:bg-maroon/40 transition-colors" />
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2">
+          {products.slice(0, 8).map((p, i) => (
+            <a key={i} href="#" className="group relative aspect-[3/4] overflow-hidden rounded-lg">
+              <img src={p.image} alt={p.name} loading="lazy" width={1024} height={1280} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+              <div className="absolute inset-0 bg-maroon/0 group-hover:bg-maroon/40 transition-colors flex items-center justify-center">
+                <span className="text-cream text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity">{p.name}</span>
+              </div>
             </a>
           ))}
         </div>
