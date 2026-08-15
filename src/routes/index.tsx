@@ -6,6 +6,8 @@ import { SiteLayout } from "@/components/site/Layout";
 import { ProductCard } from "@/components/site/ProductCard";
 import { products, categories } from "@/data/products";
 import hero from "@/assets/hero-saree.jpg";
+import lookbook1 from "@/assets/lookbook-1.jpg";
+import lookbook2 from "@/assets/lookbook-2.jpg";
 
 export const Route = createFileRoute("/")({
   component: Index,
