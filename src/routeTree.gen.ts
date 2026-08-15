@@ -13,6 +13,7 @@ import { Route as WishlistRouteImport } from './routes/wishlist'
 import { Route as TrackRouteImport } from './routes/track'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as LookbookRouteImport } from './routes/lookbook'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CheckoutRouteImport } from './routes/checkout'
@@ -41,6 +42,11 @@ const ShopRoute = ShopRouteImport.update({
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LookbookRoute = LookbookRouteImport.update({
+  id: '/lookbook',
+  path: '/lookbook',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -98,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
+  '/lookbook': typeof LookbookRoute
   '/profile': typeof ProfileRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
@@ -113,6 +120,7 @@ export interface FileRoutesByTo {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
+  '/lookbook': typeof LookbookRoute
   '/profile': typeof ProfileRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
@@ -129,6 +137,7 @@ export interface FileRoutesById {
   '/checkout': typeof CheckoutRoute
   '/contact': typeof ContactRoute
   '/login': typeof LoginRoute
+  '/lookbook': typeof LookbookRoute
   '/profile': typeof ProfileRoute
   '/shop': typeof ShopRoute
   '/track': typeof TrackRoute
@@ -146,6 +155,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/login'
+    | '/lookbook'
     | '/profile'
     | '/shop'
     | '/track'
@@ -161,6 +171,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/login'
+    | '/lookbook'
     | '/profile'
     | '/shop'
     | '/track'
@@ -176,6 +187,7 @@ export interface FileRouteTypes {
     | '/checkout'
     | '/contact'
     | '/login'
+    | '/lookbook'
     | '/profile'
     | '/shop'
     | '/track'
@@ -192,6 +204,7 @@ export interface RootRouteChildren {
   CheckoutRoute: typeof CheckoutRoute
   ContactRoute: typeof ContactRoute
   LoginRoute: typeof LoginRoute
+  LookbookRoute: typeof LookbookRoute
   ProfileRoute: typeof ProfileRoute
   ShopRoute: typeof ShopRoute
   TrackRoute: typeof TrackRoute
@@ -227,6 +240,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lookbook': {
+      id: '/lookbook'
+      path: '/lookbook'
+      fullPath: '/lookbook'
+      preLoaderRoute: typeof LookbookRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -304,6 +324,7 @@ const rootRouteChildren: RootRouteChildren = {
   CheckoutRoute: CheckoutRoute,
   ContactRoute: ContactRoute,
   LoginRoute: LoginRoute,
+  LookbookRoute: LookbookRoute,
   ProfileRoute: ProfileRoute,
   ShopRoute: ShopRoute,
   TrackRoute: TrackRoute,
