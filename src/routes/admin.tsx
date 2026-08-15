@@ -1,5 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
+import { motion } from "framer-motion";
+import {
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  CartesianGrid,
+} from "recharts";
 import { LayoutDashboard, Package, ShoppingCart, Users, Tag, Image as ImageIcon, TrendingUp, IndianRupee } from "lucide-react";
 import { SiteLayout } from "@/components/site/Layout";
 import { products } from "@/data/products";
@@ -48,13 +63,64 @@ function AdminPage() {
   );
 }
 
+const salesData = [
+  { day: "Mon", sales: 42000, orders: 118 },
+  { day: "Tue", sales: 66000, orders: 152 },
+  { day: "Wed", sales: 51000, orders: 131 },
+  { day: "Thu", sales: 81000, orders: 178 },
+  { day: "Fri", sales: 73500, orders: 165 },
+  { day: "Sat", sales: 98000, orders: 204 },
+  { day: "Sun", sales: 89000, orders: 191 },
+];
+
+const categoryData = [
+  { name: "Silk", value: 38 },
+  { name: "Wedding", value: 26 },
+  { name: "Festive", value: 18 },
+  { name: "Cotton", value: 11 },
+  { name: "Designer", value: 7 },
+];
+
+const pieColors = ["var(--maroon)", "var(--gold-deep)", "var(--royal-red)", "var(--gold)", "var(--maroon-deep)"];
+
+function ChartCard({ title, subtitle, delay = 0, children }: { title: string; subtitle?: string; delay?: number; children: React.ReactNode }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 24 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
+      className="bg-card border border-border rounded-2xl p-6 hover-lift"
+    >
+      <div className="flex items-baseline justify-between">
+        <h3 className="font-serif text-lg">{title}</h3>
+        {subtitle && <span className="text-xs text-muted-foreground">{subtitle}</span>}
+      </div>
+      <div className="mt-5 h-56">{children}</div>
+    </motion.div>
+  );
+}
+
+const tooltipStyle = {
+  background: "var(--card)",
+  border: "1px solid var(--border)",
+  borderRadius: "0.75rem",
+  fontSize: "12px",
+  color: "var(--foreground)",
+} as const;
+
 function Stat({ label, value, Icon, trend }: { label: string; value: string; Icon: any; trend?: string }) {
   return (
-    <div className="bg-card border border-border rounded-2xl p-5">
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.45 }}
+      className="bg-card border border-border rounded-2xl p-5 hover-lift"
+    >
       <div className="flex items-center justify-between"><p className="text-xs uppercase tracking-wider text-muted-foreground">{label}</p><Icon className="w-4 h-4 text-maroon" /></div>
       <p className="font-serif text-3xl mt-2 text-maroon">{value}</p>
       {trend && <p className="text-xs text-emerald-600 mt-1">{trend}</p>}
-    </div>
+    </motion.div>
   );
 }
 
@@ -69,26 +135,102 @@ function Dashboard() {
         <Stat label="Conversion" value="3.8%" Icon={TrendingUp} trend="+0.4%" />
       </div>
       <div className="grid lg:grid-cols-2 gap-4 mt-6">
-        <div className="bg-card border border-border rounded-2xl p-6">
-          <h3 className="font-serif text-lg">Sales (Last 7 days)</h3>
-          <div className="flex items-end gap-2 h-40 mt-5">
-            {[40, 65, 50, 80, 72, 95, 88].map((h, i) => (
-              <div key={i} className="flex-1 bg-gradient-royal rounded-t-md" style={{ height: `${h}%` }} />
-            ))}
+        <ChartCard title="Revenue" subtitle="Last 7 days">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={salesData} margin={{ left: -10, right: 6, top: 6 }}>
+              <defs>
+                <linearGradient id="revFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--maroon)" stopOpacity={0.45} />
+                  <stop offset="100%" stopColor="var(--maroon)" stopOpacity={0.02} />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+              <XAxis dataKey="day" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} tickFormatter={(v) => `${v / 1000}k`} />
+              <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => [`₹${v.toLocaleString("en-IN")}`, "Revenue"]} />
+              <Area type="monotone" dataKey="sales" stroke="var(--maroon)" strokeWidth={2.5} fill="url(#revFill)" animationDuration={1400} />
+            </AreaChart>
+          </ResponsiveContainer>
+        </ChartCard>
+
+        <ChartCard title="Orders per day" subtitle="This week" delay={0.1}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={salesData} margin={{ left: -18, right: 6, top: 6 }}>
+              <defs>
+                <linearGradient id="barFill" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--gold)" />
+                  <stop offset="100%" stopColor="var(--gold-deep)" />
+                </linearGradient>
+              </defs>
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+              <XAxis dataKey="day" tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: "var(--muted-foreground)" }} axisLine={false} tickLine={false} />
+              <Tooltip contentStyle={tooltipStyle} cursor={{ fill: "var(--secondary)", opacity: 0.4 }} />
+              <Bar dataKey="orders" fill="url(#barFill)" radius={[6, 6, 0, 0]} animationDuration={1200} />
+            </BarChart>
+          </ResponsiveContainer>
+        </ChartCard>
+
+        <ChartCard title="Sales by category" subtitle="Share %" delay={0.15}>
+          <div className="flex items-center h-full gap-4">
+            <ResponsiveContainer width="60%" height="100%">
+              <PieChart>
+                <Pie data={categoryData} dataKey="value" nameKey="name" innerRadius="55%" outerRadius="85%" paddingAngle={3} stroke="none" animationDuration={1200}>
+                  {categoryData.map((_, i) => (
+                    <Cell key={i} fill={pieColors[i % pieColors.length]} />
+                  ))}
+                </Pie>
+                <Tooltip contentStyle={tooltipStyle} formatter={(v: number) => [`${v}%`, "Share"]} />
+              </PieChart>
+            </ResponsiveContainer>
+            <ul className="flex-1 space-y-2">
+              {categoryData.map((c, i) => (
+                <li key={c.name} className="flex items-center gap-2 text-xs">
+                  <span className="w-2.5 h-2.5 rounded-full" style={{ background: pieColors[i % pieColors.length] }} />
+                  <span className="flex-1 text-muted-foreground">{c.name}</span>
+                  <span className="font-medium">{c.value}%</span>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-        <div className="bg-card border border-border rounded-2xl p-6">
+        </ChartCard>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="bg-card border border-border rounded-2xl p-6"
+        >
           <h3 className="font-serif text-lg">Top Sellers</h3>
           <div className="mt-4 space-y-3">
-            {products.slice(0, 4).map((p) => (
-              <div key={p.id} className="flex items-center gap-3">
+            {products.slice(0, 4).map((p, i) => (
+              <motion.div
+                key={p.id}
+                initial={{ opacity: 0, x: -12 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.25 + i * 0.08 }}
+                className="flex items-center gap-3"
+              >
                 <img src={p.image} alt="" className="w-10 h-12 rounded object-cover" />
-                <div className="flex-1"><p className="text-sm font-medium line-clamp-1">{p.name}</p><p className="text-xs text-muted-foreground">{p.reviews} sold</p></div>
+                <div className="flex-1">
+                  <p className="text-sm font-medium line-clamp-1">{p.name}</p>
+                  <div className="mt-1 h-1.5 rounded-full bg-secondary overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${Math.min(100, (p.reviews / 3))}%` }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.9, delay: 0.3 + i * 0.08 }}
+                      className="h-full bg-gradient-royal"
+                    />
+                  </div>
+                </div>
                 <p className="text-sm font-semibold text-maroon">₹{p.price.toLocaleString("en-IN")}</p>
-              </div>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   );
